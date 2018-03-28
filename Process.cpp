@@ -71,6 +71,10 @@ int Process::getTotalCpuDuration()
 }
 
 
+int Process::getProcessId()
+{
+	return m_processId;
+}
 
 
 

@@ -6,15 +6,17 @@
 #include "Scheduler.h"
 #include "FcfsSched.h"
 
+//load initial events
 void LoadEvents(std::priority_queue<Event>* priorityQueue, int eventsCount)
 {
 	for(int cnt = 0; cnt <  eventsCount; cnt++)
 	{
-		priorityQueue->push(Event(0, 0));
+		priorityQueue->push(Event(0, 0, 0));
 	}
 }
 
-Process* ScheduleNext(int time, std::priority_queue<Event>* eventQueue, Scheduler* scheduler, int newEventType)
+//send next to cpu and add end event
+Process* ScheduleNext(int time, std::priority_queue<Event>* eventQueue, Scheduler* scheduler)
 {
 	if(scheduler->Empty())
 	{
@@ -22,11 +24,11 @@ Process* ScheduleNext(int time, std::priority_queue<Event>* eventQueue, Schedule
 	}
 
 	Process* proc = scheduler->Next();
-	if (newEventType == 1) //completed cpu burst
-	{
-		proc->CalcNextCpuBurst();
-		eventQueue->push(Event(time+ proc->getNextCpuBurst(), newEventType));
-	}
+	 //completed cpu burst
+	
+	
+	eventQueue->push(Event(time+ proc->getNextCpuBurst(), 1, proc->getProcessId()));
+	
 
 	return proc;
 }
@@ -34,6 +36,7 @@ Process* ScheduleNext(int time, std::priority_queue<Event>* eventQueue, Schedule
 int main()
 {
 	std::priority_queue<Event> eventQueue;
+	std::vector<Process*> ioList;
 
 	std::cout <<  "Judah Perez, CS 433, Project 3" << std::endl;
 	std::cout << "CPU Scheduling" << std::endl;
@@ -63,29 +66,83 @@ int main()
 
 
 		eventQueue.pop();
-		std::cout << "Current Time:" << time << "Event: " << event.GetEventName() << " Event Time: " << event.getTime() << std::endl;
+		std::cout << "Current Time:" << time << " Event: " << event.GetEventName() << " Event Time: " << event.getTime() << std::endl;
 
 		switch (event.getEventType())
 		{
 		case 0:
-			scheduler->Add(new Process(procId++));
-			if(processInCpu == 0) //idle
-			{
-				processInCpu = ScheduleNext(time, &eventQueue, scheduler, 1);
-			}
-			break;
-		case 1:
-			scheduler->Add(new Process(procId++));
+		{
+			int newProcId = procId++;
+			Process* proc = new Process(newProcId);
+			proc->CalcNextCpuBurst();
+			scheduler->Add(proc);
+			
 			if (processInCpu == 0) //idle
 			{
-				processInCpu = ScheduleNext(time, &eventQueue, scheduler, 1);
+				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
 			}
+		}
+			break;
+
+		case 1:
+
+			processInCpu->setRemainingCpuDuration(processInCpu->getRemainingCpuDuration() - processInCpu->getNextCpuBurst());
+			//calced remaining, checking if need to reschedule
+			if(processInCpu->getRemainingCpuDuration() > 0)
+			{
+				//io event
+				eventQueue.push(Event(time + processInCpu->getNextCpuBurst(), 2, processInCpu->getProcessId()));
+				ioList.push_back(processInCpu);
+				
+			}
+			processInCpu = 0;
+			//if (processInCpu == 0) //idle
+			
+			processInCpu = ScheduleNext(time, &eventQueue, scheduler);
+			
+			break;
+		case 2:
+
+			//todo: find in ioList
+			Process * proc = 0;
+			for (std::vector<Process*>::iterator it = ioList.begin(); it != ioList.end(); ++it)
+			{
+				if((*it)->getProcessId() == event.getProcessId())
+				{
+					proc = *it;
+					ioList.erase(it);
+					break;
+				}
+			}
+			//remove from ioList
+
+			if(proc == 0)
+			{
+				throw "We could not find!";
+			}
+			
+
+			proc->CalcNextCpuBurst();
+			
+
+			//calced remaining, checking if need to reschedule
+			if (proc->getRemainingCpuDuration() > 0)
+			{
+				scheduler->Add(proc);
+
+			}
+
+			if (processInCpu == 0) //idle
+			{
+				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
+			}
+
 			break;
 		}
-
-
-
+		
 	}
+
+
 
 	int read;
 	std::cin >> read;

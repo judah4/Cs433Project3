@@ -2,10 +2,11 @@
 
 
 
-Event::Event(int time, int eventType)
+Event::Event(int time, int eventType, int procId)
 {
 	m_time = time;
 	m_eventType = eventType;
+	m_procId = procId;
 }
 
 
@@ -39,5 +40,11 @@ const char* Event::GetEventName()
 	default:
 		return "Unknown";
 	}
+}
+
+
+int Event::getProcessId()
+{
+	return m_procId;
 }
 

@@ -30,6 +30,7 @@ public:
 	int getRemainingCpuDuration();
 	void setRemainingCpuDuration(int val);
 	int getTotalCpuDuration();
+	int getProcessId();
 
 
 
