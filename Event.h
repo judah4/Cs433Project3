@@ -9,10 +9,11 @@ private:
 	int m_eventType; //event value
 
 public:
-	Event();
+	Event(int time, int eventType);
 	~Event();
 	int getTime();
 	int getEventType();
+	const char* GetEventName();
 
 	friend bool operator<(const Event& lhs, const Event& rhs)
 	{

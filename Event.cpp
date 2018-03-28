@@ -2,8 +2,10 @@
 
 
 
-Event::Event()
+Event::Event(int time, int eventType)
 {
+	m_time = time;
+	m_eventType = eventType;
 }
 
 
@@ -20,5 +22,18 @@ int Event::getTime()
 int Event::getEventType()
 {
 	return m_eventType;
+}
+
+const char* Event::GetEventName()
+{
+	switch (m_eventType)
+	{
+	case 0:
+		return "Process Arrival";
+	case 1:
+		return "CPU Burst Completion";
+	default:
+		return "Unknown";
+	}
 }
 
