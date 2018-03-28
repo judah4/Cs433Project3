@@ -22,7 +22,8 @@ Process* ScheduleNext(int time, std::priority_queue<Event>* eventQueue, Schedule
 	}
 
 	Process* proc = scheduler->Next();
-	if (newEventType == 1) {
+	if (newEventType == 1) //completed cpu burst
+	{
 		proc->CalcNextCpuBurst();
 		eventQueue->push(Event(time+ proc->getNextCpuBurst(), newEventType));
 	}
@@ -69,6 +70,13 @@ int main()
 		case 0:
 			scheduler->Add(new Process(procId++));
 			if(processInCpu == 0) //idle
+			{
+				processInCpu = ScheduleNext(time, &eventQueue, scheduler, 1);
+			}
+			break;
+		case 1:
+			scheduler->Add(new Process(procId++));
+			if (processInCpu == 0) //idle
 			{
 				processInCpu = ScheduleNext(time, &eventQueue, scheduler, 1);
 			}
