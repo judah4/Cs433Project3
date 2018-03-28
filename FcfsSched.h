@@ -12,8 +12,8 @@ public:
 	FcfsSched();
 	~FcfsSched();
 
-	void Add(Process* proc);
-	Process* Next();
+	void Add(Process proc);
+	Process Next();
 	Process* Top();
 	bool Empty();
 };

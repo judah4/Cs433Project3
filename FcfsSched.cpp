@@ -11,9 +11,9 @@ FcfsSched::~FcfsSched()
 {
 }
 
-void FcfsSched::Add(Process* proc)
+void FcfsSched::Add(Process proc)
 {
-	queue.push(*proc);
+	queue.push(proc);
 }
 
 bool FcfsSched::Empty()
@@ -21,11 +21,11 @@ bool FcfsSched::Empty()
 	return queue.empty();
 }
 
-Process* FcfsSched::Next()
+Process FcfsSched::Next()
 {
 	Process* proc = this->Top();
 	queue.pop();
-	return proc;
+	return *proc;
 }
 
 Process* FcfsSched::Top()

@@ -13,9 +13,13 @@ private:
 	int m_ioBurstTime;
 	int m_status; //0 ready, 1 running, 2 waiting, 3 terminated
 
+	int m_finishTime;
+	int m_ioTime;
+	int m_serviceTime;
+
 
 public:
-	Process(int procId);
+	Process(int procId, int startTime);
 	~Process();
 
 	void CalcNextCpuBurst();
@@ -31,6 +35,12 @@ public:
 	void setRemainingCpuDuration(int val);
 	int getTotalCpuDuration();
 	int getProcessId();
+
+	void setFinishTime(int val);
+	void addIoTime(int addTime);
+	void addServiceTime(int addTime);
+
+	void Print();
 
 
 
