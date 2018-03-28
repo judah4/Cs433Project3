@@ -116,10 +116,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="FcfsSched.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Process.cpp" />
+    <ClCompile Include="random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event.h" />
+    <ClInclude Include="FcfsSched.h" />
+    <ClInclude Include="Process.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="Scheduler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

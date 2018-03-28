@@ -17,7 +17,7 @@ public:
 
 	friend bool operator<(const Event& lhs, const Event& rhs)
 	{
-		return lhs.m_time < rhs.m_time;
+		return lhs.m_time > rhs.m_time;
 	}
 };
 

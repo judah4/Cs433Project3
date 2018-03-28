@@ -32,6 +32,10 @@ const char* Event::GetEventName()
 		return "Process Arrival";
 	case 1:
 		return "CPU Burst Completion";
+	case 2:
+		return "I/O Completion";
+	case 3:
+		return "Timer Expiration";
 	default:
 		return "Unknown";
 	}
