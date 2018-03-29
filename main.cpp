@@ -61,6 +61,8 @@ int main()
 	LoadEvents(&eventQueue, testCount); //set amount of starting procs
 
 	int time = 0;
+	int startIdle = 0;
+	int idleTime = 0;
 	int procId = 1;
 	Scheduler* scheduler;
 	
@@ -106,6 +108,7 @@ int main()
 			
 			if (processInCpu == 0) //idle
 			{
+				idleTime += time - startIdle;
 				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
 			}
 		}
@@ -137,6 +140,10 @@ int main()
 			//if (processInCpu == 0) //idle
 
 			processInCpu = ScheduleNext(time, &eventQueue, scheduler);
+			if (processInCpu == 0) 
+			{
+				startIdle = time;
+			}
 		}
 			break;
 		case 2:
@@ -174,29 +181,60 @@ int main()
 
 			if (processInCpu == 0) //idle
 			{
+				//if found idling here, we were not processing anything during io
+				idleTime += time - startIdle;
 				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
+			}
+
+			if (processInCpu == 0) 
+			{
+				startIdle = time;
 			}
 		}
 			break;
 		case 3:
 			//throw out timer expiration
+
 			processInCpu->setStatus(3);
 			processInCpu = 0;
 			if (processInCpu == 0) //idle
 			{
 				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
 			}
+
+			if (processInCpu == 0)
+			{
+				startIdle = time;
+			}
 			break;
 		}
 		
 	}
 
+	//find averages
+
+	float throughputSecs = finished.size() / (time / 1000.0f);
+	float idlePercent = idleTime / (float)time;
+	int utilPercent = (int)((1 - idlePercent) * 100);
+	int waitTime = 0;
+	int turnaround = 0;
+
+
 	for (std::vector<Process*>::iterator it = finished.begin(); it != finished.end(); ++it)
 	{
+		waitTime += (*it)->WaitingTime();
+		turnaround += (*it)->Turnaround();
 		(*it)->Print();
 	}
 
+	waitTime /= finished.size();
+	turnaround /= finished.size();
+	std::cout << std::endl;
 
+	std::cout << "CPU Utilization is " << utilPercent << "%" << std::endl;
+	std::cout << "Throughput is " << throughputSecs << " jobs / s" << std::endl;
+	std::cout << "Average turnaround time: " << (turnaround / 1000.0f) << " s" << std::endl;
+	std::cout << "Average wait time: " << (waitTime / 1000.0f) << " s" << std::endl;
 
 	int read;
 	std::cin >> read;

@@ -40,6 +40,9 @@ public:
 	void addIoTime(int addTime);
 	void addServiceTime(int addTime);
 
+	int Turnaround();
+	int WaitingTime();
+
 	void Print();
 
 
