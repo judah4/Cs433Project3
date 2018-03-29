@@ -8,7 +8,7 @@ LIB = -lm			# linked libraries
 LDFLAGS = -L.			# link flags
 PROG = project3			# target executable (output)
 HDRS = random.h Event.h FcfsSched.h Process.h Scheduler.h SjfSched.h
-SRC = random.cpp Event.cpp FcfsSched.cpp Process.cpp Scheduler.cpp SjfSched.cpp main.cpp # .c or .cpp source files.
+SRC = random.cpp Event.cpp FcfsSched.cpp Process.cpp SjfSched.cpp main.cpp # .c or .cpp source files.
 OBJ = $(SRC:.cpp=.o) 	# object files for the target. Add more to this and next lines if there are more than one source files.
 
 all : $(PROG)
