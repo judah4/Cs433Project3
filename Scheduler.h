@@ -10,6 +10,8 @@ public:
 	virtual Process Top() = 0;
 	virtual bool Empty() = 0;
 
+	virtual const char* Name() = 0;
+
 };
 #endif
 

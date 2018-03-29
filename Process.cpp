@@ -9,7 +9,7 @@ Process::Process(int procId, int startTime)
 	m_processId = procId;
 	m_startTime = startTime;
 
-	m_totalCpuDuration = ranInt(1000, 60000);
+	m_totalCpuDuration = ranInt(1000, 60000); //1 second to 1 minute
 	m_remainingCpuDuration = m_totalCpuDuration;
 	m_avgCpuBurtLength = ranInt(5,100);
 	CalcNextCpuBurst();
@@ -26,13 +26,13 @@ Process::~Process()
 {
 }
 
-
+//next cpu burst
 void Process::CalcNextCpuBurst()
 {
 	m_nextCpuBurstLength = CPUBurstRandom(m_avgCpuBurtLength);
 }
 
-
+//next io burst
 void Process::CalcNextIoBurst()
 {
 	m_ioBurstTime = ranInt(30, 100);

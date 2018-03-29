@@ -33,3 +33,7 @@ Process SjfSched::Top()
 {
 	return queue.top();
 }
+
+const char* SjfSched::Name() {
+	return "Shortest Job First";
+}

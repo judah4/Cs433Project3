@@ -219,6 +219,7 @@ int main()
 	int waitTime = 0;
 	int turnaround = 0;
 
+	std::cout << scheduler->Name() << ":" << std::endl;
 
 	for (std::vector<Process*>::iterator it = finished.begin(); it != finished.end(); ++it)
 	{

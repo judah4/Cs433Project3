@@ -34,5 +34,9 @@ Process FcfsSched::Top()
 }
 
 
+const char* FcfsSched::Name() {
+	return "First Come First Served";
+}
+
 
 

@@ -16,6 +16,7 @@ public:
 	Process Next();
 	Process Top();
 	bool Empty();
+	const char* Name();
 };
 
 #endif
