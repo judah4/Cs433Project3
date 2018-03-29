@@ -94,15 +94,13 @@ void Process::addServiceTime(int addTime) {
 	m_serviceTime += addTime;
 }
 
-
-
 void Process::Print() 
 {
 	std::cout << "Process " << m_processId << ":" << std::endl;
-	std::cout << "arrival time: " << m_startTime << " s" << std::endl;
-	std::cout << "finish time: " << m_finishTime << " s" << std::endl;
-	std::cout << "service time: " << m_serviceTime << " s" << std::endl;
-	std::cout << "I/O time: " << m_ioTime << " s" << std::endl;
+	std::cout << "arrival time: " << (m_startTime / 1000.0f) << " s" << std::endl;
+	std::cout << "finish time: " << (m_finishTime / 1000.0f) << " s" << std::endl;
+	std::cout << "service time: " << (m_serviceTime / 1000.0f) << " s" << std::endl;
+	std::cout << "I/O time: " << (m_ioTime / 1000.0f) << " s" << std::endl;
 	std::cout << "turnaround time: " << ((m_finishTime - m_startTime) / 1000.0f) << " s" << std::endl;
 	std::cout << "waiting time: " << ((m_finishTime - m_startTime - m_serviceTime - m_ioTime) / 1000.0f) << " s" << std::endl;
 }

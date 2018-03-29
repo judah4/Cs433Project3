@@ -120,6 +120,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="random.cpp" />
+    <ClCompile Include="SjfSched.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Process.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="Scheduler.h" />
+    <ClInclude Include="SjfSched.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

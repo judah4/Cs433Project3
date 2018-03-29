@@ -23,14 +23,14 @@ bool FcfsSched::Empty()
 
 Process FcfsSched::Next()
 {
-	Process* proc = this->Top();
+	Process proc = this->Top();
 	queue.pop();
-	return *proc;
+	return proc;
 }
 
-Process* FcfsSched::Top()
+Process FcfsSched::Top()
 {
-	return &queue.front();
+	return queue.front();
 }
 
 

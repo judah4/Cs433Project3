@@ -30,6 +30,9 @@
     <ClCompile Include="FcfsSched.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SjfSched.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FcfsSched.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SjfSched.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

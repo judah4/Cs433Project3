@@ -5,6 +5,7 @@
 #include "Event.h"
 #include "Scheduler.h"
 #include "FcfsSched.h"
+#include "SjfSched.h"
 #include "random.h"
 
 int MaxTime = 300000;//ms
@@ -27,14 +28,22 @@ Process* ScheduleNext(int time, std::priority_queue<Event>* eventQueue, Schedule
 	}
 
 	Process proc = scheduler->Next();
+	proc.setStatus(1);
 	 //completed cpu burst
+
+	int endTime = time + proc.getNextCpuBurst();
+	int eventType = 1;
+	if (endTime > MaxTime) {
+		eventType = 3;
+	}
 	
-	eventQueue->push(Event(time+ proc.getNextCpuBurst(), 1, proc.getProcessId()));
+	eventQueue->push(Event(endTime, eventType, proc.getProcessId()));
 	
 
 	return new Process(proc);
 }
 
+//my man the main
 int main()
 {
 	std::priority_queue<Event> eventQueue;
@@ -44,14 +53,28 @@ int main()
 	std::cout <<  "Judah Perez, CS 433, Project 3" << std::endl;
 	std::cout << "CPU Scheduling" << std::endl;
 
-	LoadEvents(&eventQueue, 10); //set amount of starting procs
+	std::cout << "Enter number of processing to simulate (1-100). 10 is a good test." << std::endl;
+	int testCount;
+	std::cin >> testCount;
+
+
+	LoadEvents(&eventQueue, testCount); //set amount of starting procs
 
 	int time = 0;
 	int procId = 1;
 	Scheduler* scheduler;
 	
+	int schedSelect = 0;
+	std::cout << "Select type of scheduler. 0  for First Come First Serve, 1 for Shortest Job First." << std::endl;
+	std::cin >> schedSelect;
 	//scheduler selection
-	scheduler = new FcfsSched();
+	if (schedSelect == 0) {
+		scheduler = new FcfsSched();
+	}
+	else {
+		scheduler = new SjfSched();
+	}
+	
 	Process* processInCpu = 0;
 
 	while (!eventQueue.empty()) {
@@ -78,6 +101,7 @@ int main()
 			int newProcId = procId++;
 			Process proc = Process(newProcId, event.getTime());
 			proc.CalcNextCpuBurst();
+			proc.setStatus(0);
 			scheduler->Add(proc);
 			
 			if (processInCpu == 0) //idle
@@ -98,7 +122,7 @@ int main()
 				//io event
 				processInCpu->CalcNextIoBurst();
 				eventQueue.push(Event(time + processInCpu->getNextIoBurst(), 2, processInCpu->getProcessId()));
-
+				processInCpu->setStatus(2);
 				ioList.push_back(processInCpu);
 
 			}
@@ -106,6 +130,7 @@ int main()
 			{
 				//process done
 				processInCpu->setFinishTime(time);
+				processInCpu->setStatus(3);
 				finished.push_back(processInCpu);
 			}
 			processInCpu = 0;
@@ -142,6 +167,7 @@ int main()
 			//calced remaining, checking if need to reschedule
 			if (proc->getRemainingCpuDuration() > 0)
 			{
+				proc->setStatus(0);
 				scheduler->Add(*proc);
 
 			}
@@ -151,6 +177,15 @@ int main()
 				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
 			}
 		}
+			break;
+		case 3:
+			//throw out timer expiration
+			processInCpu->setStatus(3);
+			processInCpu = 0;
+			if (processInCpu == 0) //idle
+			{
+				processInCpu = ScheduleNext(time, &eventQueue, scheduler);
+			}
 			break;
 		}
 		

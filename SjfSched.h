@@ -1,16 +1,16 @@
-#ifndef FCFSSCHED_H
-#define FCFSSCHED_H
+#ifndef SJFSCHED_H
+#define SJFSCHED_H
 #include "Scheduler.h"
 #include <queue>
 
-class FcfsSched : public Scheduler
+class SjfSched : public Scheduler
 {
 private:
-	std::queue<Process> queue;
+	std::priority_queue<Process> queue;
 
 public:
-	FcfsSched();
-	~FcfsSched();
+	SjfSched();
+	~SjfSched();
 
 	void Add(Process proc);
 	Process Next();
