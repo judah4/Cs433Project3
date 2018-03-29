@@ -51,7 +51,9 @@ int main()
 	std::vector<Process*> finished;
 
 	std::cout <<  "Judah Perez, CS 433, Project 3" << std::endl;
+	std::cout << "3/28/2018" << std::endl;
 	std::cout << "CPU Scheduling" << std::endl;
+	std::cout << "Simulate CPU Scheduling with different scheduling methods" << std::endl;
 
 	std::cout << "Enter number of processing to simulate (1-100). 10 is a good test." << std::endl;
 	int testCount;
